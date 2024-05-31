@@ -51,6 +51,9 @@
 #include "TPP/GPU/Utils.h"
 #include "TPP/Passes.h"
 
+#include "gc/Dialect/Microkernel/MicrokernelDialect.h"
+#include "gc/Transforms/Microkernel/MicrokernelPasses.h"
+
 #include <algorithm>
 
 using namespace mlir;
@@ -275,6 +278,7 @@ int main(int argc, char **argv) {
   registry.insert<mlir::xsmm::XsmmDialect>();
   registry.insert<mlir::check::CheckDialect>();
   registry.insert<mlir::perf::PerfDialect>();
+  registry.insert<mlir::microkernel::MicrokernelDialect>();
   registerAllDialects(registry);
   registerAllExtensions(registry);
   registerAllToLLVMIRTranslations(registry);

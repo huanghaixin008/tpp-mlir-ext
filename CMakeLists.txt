@@ -61,7 +61,8 @@ set(MLIR_EXTENSION_PATH "" CACHE STRING "path to mlir extension lib")
 if(MLIR_EXTENSION_PATH)
     set(EXT_PATH ${MLIR_EXTENSION_PATH})
     include_directories(${EXT_PATH}/include)
-    link_directories(${EXT_PATH}/lib)
+    include_directories(${EXT_PATH}/build/include)
+    link_directories(${EXT_PATH}/build/lib)
 endif()
 
 # libxsmm
