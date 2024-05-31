@@ -8,6 +8,10 @@ if(USE_OneDNN)
   set(ONEDNN_LIBS "tpp_dnnl_runner_utils")
 endif()
 
+if(DEFINED EXT_PATH)
+  set(MLIR_CUSTOM_EXTENSION_LIBS MLIRMicrokernel MLIRMicrokernelTransforms)
+endif()
+
 set(LIBS
         ${dialect_libs}
         ${conversion_libs}
@@ -20,6 +24,7 @@ set(LIBS
         tpp_xsmm_runner_utils
         ${ONEDNN_LIBS}
         TPPTestLib
+        ${MLIR_CUSTOM_EXTENSION_LIBS}
         )
 add_llvm_executable(tpp-opt tpp-opt.cpp)
 

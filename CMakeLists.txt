@@ -56,6 +56,14 @@ add_definitions(${LLVM_DEFINITIONS})
 set(LLVM_LIT_ARGS "-sv" CACHE STRING "lit default options")
 include(openmp)
 
+# MLIR extensions
+set(MLIR_EXTENSION_PATH "" CACHE STRING "path to mlir extension lib")
+if(MLIR_EXTENSION_PATH)
+    set(EXT_PATH ${MLIR_EXTENSION_PATH})
+    include_directories(${EXT_PATH}/include)
+    link_directories(${EXT_PATH}/lib)
+endif()
+
 # libxsmm
 include(xsmm)
 message (STATUS "LIBXSMM Include dir: ${XSMM_INCLUDE_DIRS}")
