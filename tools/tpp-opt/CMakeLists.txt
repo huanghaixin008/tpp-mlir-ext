@@ -9,7 +9,7 @@ if(USE_OneDNN)
 endif()
 
 if(DEFINED EXT_PATH)
-  set(MLIR_CUSTOM_EXTENSION_LIBS MLIRMicrokernel MLIRMicrokernelTransforms)
+  set(MLIR_CUSTOM_EXTENSION_LIBS MLIRMicrokernel MLIRMicrokernelTransforms GCMLIRUtils)
 endif()
 
 set(LIBS
