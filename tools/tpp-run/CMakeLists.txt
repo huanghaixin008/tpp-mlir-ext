@@ -14,7 +14,7 @@ if(USE_OpenMP)
 endif()
 
 if(DEFINED EXT_PATH)
-  set(MLIR_CUSTOM_EXTENSION_LIBS MLIRMicrokernel MLIRMicrokernelTransforms GCMLIRUtils)
+  set(MLIR_CUSTOM_EXTENSION_LIBS GCCpuRuntime MLIRMicrokernel MLIRMicrokernelTransforms GCMLIRUtils)
 endif()
 
 set(LIBS
@@ -81,7 +81,7 @@ target_link_libraries(tpp-run PRIVATE
 message(STATUS "TPP libraries at: ${CMAKE_BINARY_DIR}/lib")
 message(STATUS "MLIR libraries at: ${LLVM_LIBRARY_DIR}")
 if(DEFINED EXT_PATH)
-  message(STATUS "Extension libraries at: ${EXT_PATH}/lib")
+  message(STATUS "Custom extension path at: ${EXT_PATH}")
 endif()
 # Add TPP/MLIR library path so we don't need --shared-libs on every call
 # TODO: I don't understand... they are already in LIBS above.

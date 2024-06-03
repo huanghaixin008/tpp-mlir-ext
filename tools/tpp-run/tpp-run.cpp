@@ -58,6 +58,8 @@
 
 using namespace mlir;
 
+extern int gc_runtime_keep_alive;
+
 // Number of loops for benchmarks
 llvm::cl::opt<unsigned>
     benchNumLoops("n", llvm::cl::desc("Number of loops for benchmarks"),
@@ -258,6 +260,9 @@ LogicalResult validateInput() {
 }
 
 int main(int argc, char **argv) {
+  // keeps GCCPURuntime linked
+  gc_runtime_keep_alive = 0;
+
   // Make sure the args are compatible
   if (failed(validateInput()))
     return 1;
