@@ -23,6 +23,8 @@
 #include "TPP/PassUtils.h"
 #include "mlir/Transforms/Passes.h"
 
+#include "gc/Transforms/Microkernel/MicrokernelPasses.h"
+
 #include <string>
 
 using namespace mlir;
@@ -90,6 +92,7 @@ struct DefaultPipeline : public tpp::impl::DefaultPipelineBase<DefaultPipeline>,
     registry.insert<xsmm::XsmmDialect>();
     registry.insert<check::CheckDialect>();
     registry.insert<perf::PerfDialect>();
+    registry.insert<mlir::microkernel::MicrokernelDialect>();
     check::registerBufferizableOpInterfaceExternalModels(registry);
     perf::registerBufferizableOpInterfaceExternalModels(registry);
 

@@ -22,6 +22,8 @@
 #include "TPP/Dialect/Xsmm/XsmmDialect.h"
 #include "TPP/PassUtils.h"
 
+#include "gc/Transforms/Microkernel/MicrokernelPasses.h"
+
 using namespace mlir;
 using namespace mlir::tpp;
 
@@ -271,6 +273,14 @@ private:
   void constructPipeline() override {
     pm.clear();
 
+    // gc passes
+    // --convert-linalg-to-microkernel --early-dispatch-microkernel
+    // --convert-microkernel-to-dnnl-func --microkernel-invariant-code-motion
+    pm.addPass(mlir::microkernel::createConvertLinalgToMicrokernel());
+    pm.addPass(mlir::microkernel::createEarlyDispatchMicrokernel());
+    pm.addPass(mlir::microkernel::createConvertMicrokernelToDnnlFunc());
+    pm.addPass(mlir::microkernel::createMicrokernelInvariantCodeMotion());
+
     pm.addPass(createConvertLinalgToXsmm());
     pm.addPass(createCombineXsmmOpPass());
     pm.addPass(createFoldXsmmFlags());
@@ -289,6 +299,7 @@ struct DefaultTppPasses
     registry.insert<xsmm::XsmmDialect>();
     registry.insert<check::CheckDialect>();
     registry.insert<perf::PerfDialect>();
+    registry.insert<mlir::microkernel::MicrokernelDialect>();
     check::registerBufferizableOpInterfaceExternalModels(registry);
     perf::registerBufferizableOpInterfaceExternalModels(registry);
 
