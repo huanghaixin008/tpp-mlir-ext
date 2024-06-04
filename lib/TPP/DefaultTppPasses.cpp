@@ -273,14 +273,6 @@ private:
   void constructPipeline() override {
     pm.clear();
 
-    // gc passes
-    // --convert-linalg-to-microkernel --early-dispatch-microkernel
-    // --convert-microkernel-to-dnnl-func --microkernel-invariant-code-motion
-    pm.addPass(mlir::microkernel::createConvertLinalgToMicrokernel());
-    pm.addPass(mlir::microkernel::createEarlyDispatchMicrokernel());
-    pm.addPass(mlir::microkernel::createConvertMicrokernelToDnnlFunc());
-    pm.addPass(mlir::microkernel::createMicrokernelInvariantCodeMotion());
-
     pm.addPass(createConvertLinalgToXsmm());
     pm.addPass(createCombineXsmmOpPass());
     pm.addPass(createFoldXsmmFlags());
@@ -352,6 +344,16 @@ private:
 
       // Bufferize: tensor->memref.
       pm.addPass(createBufferize());
+
+      // gc passes
+      // --convert-linalg-to-microkernel --early-dispatch-microkernel
+      // --convert-microkernel-to-dnnl-func --microkernel-invariant-code-motion
+      pm.addNestedPass<func::FuncOp>(
+          mlir::microkernel::createConvertLinalgToMicrokernel());
+      pm.addPass(mlir::microkernel::createEarlyDispatchMicrokernel());
+      pm.addPass(mlir::microkernel::createConvertMicrokernelToDnnlFunc());
+      pm.addPass(mlir::microkernel::createMicrokernelInvariantCodeMotion());
+      pm.addPass(createPrintIRPass());
 
       // Lower all Tile operations.
       pm.addNestedPass<func::FuncOp>(createLinalgLowering());
