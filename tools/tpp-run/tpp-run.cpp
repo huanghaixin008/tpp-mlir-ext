@@ -51,9 +51,14 @@
 #include "TPP/GPU/Utils.h"
 #include "TPP/Passes.h"
 
+#include "gc/Dialect/Microkernel/MicrokernelDialect.h"
+#include "gc/Transforms/Microkernel/MicrokernelPasses.h"
+
 #include <algorithm>
 
 using namespace mlir;
+
+extern int gc_runtime_keep_alive;
 
 // Number of loops for benchmarks
 llvm::cl::opt<unsigned>
@@ -255,6 +260,9 @@ LogicalResult validateInput() {
 }
 
 int main(int argc, char **argv) {
+  // keeps GCCPURuntime linked
+  gc_runtime_keep_alive = 0;
+
   // Make sure the args are compatible
   if (failed(validateInput()))
     return 1;
@@ -275,6 +283,7 @@ int main(int argc, char **argv) {
   registry.insert<mlir::xsmm::XsmmDialect>();
   registry.insert<mlir::check::CheckDialect>();
   registry.insert<mlir::perf::PerfDialect>();
+  registry.insert<mlir::microkernel::MicrokernelDialect>();
   registerAllDialects(registry);
   registerAllExtensions(registry);
   registerAllToLLVMIRTranslations(registry);

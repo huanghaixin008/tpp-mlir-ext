@@ -13,6 +13,10 @@ if(USE_OpenMP)
   set(OPENMP_LIBS_INCL "-lomp")
 endif()
 
+if(DEFINED EXT_PATH)
+  set(MLIR_CUSTOM_EXTENSION_LIBS GCCpuRuntime MLIRMicrokernel MLIRMicrokernelTransforms GCMLIRUtils MLIRLinalgx)
+endif()
+
 set(LIBS
         ${dialect_libs}
         ${conversion_libs}
@@ -33,6 +37,7 @@ set(LIBS
         TPPRunner
         tpp_xsmm_runner_utils
         ${ONEDNN_LIBS}
+        ${MLIR_CUSTOM_EXTENSION_LIBS}
         )
 
 set(LLVM_LINK_COMPONENTS
@@ -75,6 +80,9 @@ target_link_libraries(tpp-run PRIVATE
 
 message(STATUS "TPP libraries at: ${CMAKE_BINARY_DIR}/lib")
 message(STATUS "MLIR libraries at: ${LLVM_LIBRARY_DIR}")
+if(DEFINED EXT_PATH)
+  message(STATUS "Custom extension path at: ${EXT_PATH}")
+endif()
 # Add TPP/MLIR library path so we don't need --shared-libs on every call
 # TODO: I don't understand... they are already in LIBS above.
 # also --no-as-needed is not available on MAC and is repeated.

@@ -30,14 +30,19 @@
 #include "TPP/Dialect/Xsmm/XsmmDialect.h"
 #include "TPP/Passes.h"
 
+#include "gc/Dialect/Microkernel/MicrokernelDialect.h"
+#include "gc/Transforms/Microkernel/MicrokernelPasses.h"
+
 int main(int argc, char **argv) {
   mlir::registerAllPasses();
   mlir::tpp::registerTppCompilerPasses();
+  mlir::microkernel::registerMicrokernelPasses();
 
   mlir::DialectRegistry registry;
   registry.insert<mlir::xsmm::XsmmDialect>();
   registry.insert<mlir::check::CheckDialect>();
   registry.insert<mlir::perf::PerfDialect>();
+  registry.insert<mlir::microkernel::MicrokernelDialect>();
   mlir::check::registerBufferizableOpInterfaceExternalModels(registry);
   mlir::perf::registerBufferizableOpInterfaceExternalModels(registry);
   mlir::tpp::registerTestStructuralMatchers();
