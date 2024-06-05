@@ -14,7 +14,7 @@ if(USE_OpenMP)
 endif()
 
 if(DEFINED EXT_PATH)
-  set(MLIR_CUSTOM_EXTENSION_LIBS GCCpuRuntime MLIRMicrokernel MLIRMicrokernelTransforms GCMLIRUtils)
+  set(MLIR_CUSTOM_EXTENSION_LIBS GCCpuRuntime MLIRMicrokernel MLIRMicrokernelTransforms GCMLIRUtils MLIRLinalgx)
 endif()
 
 set(LIBS
