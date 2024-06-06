@@ -345,6 +345,8 @@ private:
       // Bufferize: tensor->memref.
       pm.addPass(createBufferize());
 
+      // pm.addPass(createPrintIRPass());
+
       // gc passes
       // --convert-linalg-to-microkernel --early-dispatch-microkernel
       // --convert-microkernel-to-dnnl-func --microkernel-invariant-code-motion
@@ -352,8 +354,7 @@ private:
           mlir::microkernel::createConvertLinalgToMicrokernel());
       pm.addPass(mlir::microkernel::createEarlyDispatchMicrokernel());
       pm.addPass(mlir::microkernel::createConvertMicrokernelToDnnlFunc());
-      pm.addPass(mlir::microkernel::createMicrokernelInvariantCodeMotion());
-      pm.addPass(createPrintIRPass());
+      // pm.addPass(mlir::microkernel::createMicrokernelInvariantCodeMotion());
 
       // Lower all Tile operations.
       pm.addNestedPass<func::FuncOp>(createLinalgLowering());
@@ -367,6 +368,10 @@ private:
     // Low leve parallelization passes.
     LowLevelParallelizationOptions LowLevelParallelization{parallelTaskGrid};
     pm.addPass(createLowLevelParallelization(LowLevelParallelization));
+
+    // gc opt passes
+    pm.addPass(mlir::microkernel::createMicrokernelInvariantCodeMotion());
+    // pm.addPass(createPrintIRPass());
 
     // Covert all local TPP-related dialects.
     pm.addPass(createLocalDialectsLowering());
